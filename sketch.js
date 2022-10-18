@@ -23,14 +23,22 @@ function setup() {
 }
 
 function draw() {
-   background(0, 10);
+  background(0, 10);
+
+  push();
+  textSize(10);
+  fill("white");
+  let myText = "move to change direction, click to change color"
+  text(myText, width/2, height/7, 100, 80);
+  pop();
+   
   for (let i=0; i<particles.length; i++) {
     particles[i].run();
   }
 }
 
 class Particle {
-  constructor(loc, dir, speed){
+  constructor(loc, dir, speed) {
     this.loc = loc;
     this.dir = dir;
     this.speed = speed;
@@ -43,13 +51,15 @@ class Particle {
   }
   move(){
     let angle = noise(this.loc.x/noiseScale, this.loc.y/noiseScale, frameCount/noiseScale)* 360 * noiseSmoothness;
-    this.dir.x = cos(angle);
-    this.dir.y = sin(angle);
+    this.dir.x = cos(angle)* map(mouseX, 0, width, -3, 4);
+    this.dir.y = sin(angle) * map(mouseY, 0, width, -3, 4);
     
     let vel = this.dir;
-    let d = 1;  //direction change 
+    
+    //let d = 1;  //direction change 
    
-    vel * this.speed*d;
+    vel * this.speed; //*d
+    //console.log(d);
     this.loc.add(vel);
   }
   checkEdges(){
@@ -62,19 +72,21 @@ class Particle {
   update(){
     //MOVE TO CHANGE COLOR
     //let firstColor = color(255, map(mouseX, 0, width, 0, 255), map(mouseY, 0, width, 0, 255));
-    // let firstColorG = color(map(mouseX, 0, width, 0, 100));
-    // let firstColorB = color(map(mouseX, 0, width, 0, 255));
-    // let firstColor = color(firstColorR, firstColorB, firstColorG);
-    //let secondColor = color(map(mouseY, 0, height, 0, 255));
+    //  let firstColorR = noise(0,255);
+    //  let firstColorG = noise(0,255);
+    //  let firstColorB = noise(0,255);
+    //  //let firstColorB = color(map(mouseX, 0, width, 0, 255));
+    //  let firstColor = color(firstColorR, firstColorB, firstColorG);
+    // let secondColor = color(map(mouseY, 0, height, 0, 255));
     // let inter = map(this.loc.y, 0, height, 0, 1);
     // let c = lerpColor(firstColor, secondColor, inter);
-    //fill(c);
+    // fill(c);
     ellipse(this.loc.x, this.loc.y, this.loc.z);
   }
   
 }
-function mouseWheel()  {
-  console.log("wheel to change color");
-    let myColor = color(random(255), random(255), random(255))
-    fill(myColor);
-}
+ function mouseClicked()  {
+   console.log("wheel to change color");
+     let myColor = color(random(255), random(255), random(255))
+     fill(myColor);
+ }
