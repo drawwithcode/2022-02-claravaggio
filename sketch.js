@@ -1,10 +1,12 @@
+//animated wallpaper by Clara Di Bella
+
+let noiseScale = 500; //parameter to set the angle
+let noiseSmoothness = 2; //parameter to set the angle and make it smooth
+let particles = []; 
+let c1, c2;
+
 function preload() {
 }
-
-let noiseScale = 500; 
-let noiseSmoothness = 2;
-let particles = [];
-let c1, c2;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -13,8 +15,8 @@ function setup() {
   
   for (let i=0; i < width; i++) {
     let loc = createVector(random(width * 1.2), random(height), random(1,7));
-    let angle = 0;
-    let dir = createVector(cos(angle), sin(angle));
+    let angle = 0; //the starting angle - it can be whatever you want
+    let dir = createVector(cos(angle), sin(angle)); //set the base to update the angle
     let speed = random(0.5,2);
 
      particles[i]= new Particle(loc, dir, speed);
@@ -24,9 +26,11 @@ function setup() {
 function draw() {
   background(0, 10);
 
+  //creation of particles
   for (let i = 0; i < particles.length; i++) {
     particles[i].run();
   }
+  //text
   push();
   textSize(17);
   textFont("Signika Negative");
@@ -50,7 +54,7 @@ class Particle {
     this.update();
   }
   move(){
-    //set the position of the ellipses
+    //set the position of the ellipses implementing a angle with noise and the mouse x and y
     let angle = noise(this.loc.x/noiseScale, this.loc.y/noiseScale, frameCount/noiseScale)* 360 * noiseSmoothness;
     this.dir.x = cos(angle)* map(mouseX, 0, width, -3, 4);
     this.dir.y = sin(angle) * map(mouseY, 0, width, -3, 4);
